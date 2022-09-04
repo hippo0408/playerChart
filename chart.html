@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{/css/chart.css}" rel="stylesheet" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js"></script>
+<title>レーダーチャート表示画面</title>
+</head>
+<body>
+
+	<div class="main-wrapper">
+		<header>
+			<h1 class="header-title">選手能力値作成ツール</h1>
+		</header>
+		<form th:action="@{/chart}" th:method="post" th:object="${form}"
+			enctype="multipart/form-data">
+			<main>
+				<div class="containar">
+					<div class="left">
+						<h2 class="left-title">Player's Info</h2>
+						<div class="error-message"
+							th:each="error : ${#fields.detailedErrors()}"
+							th:text="${error.message}"></div>
+						<table>
+							<tbody>
+								<tr>
+									<th>FirstName</th>
+									<td><input type="text" th:field="*{firstName}"></td>
+								</tr>
+
+								<tr>
+									<th>LastName</th>
+									<td><input type="text" th:field="*{lastName}"></td>
+								</tr>
+
+								<tr>
+									<th>Number</th>
+									<td><input type="text" th:field="*{number}"></td>
+								</tr>
+
+								<tr>
+									<th>Position</th>
+									<td><select th:field="*{position}" style="width: 130px;">
+											<option
+												th:each="p : ${T(com.example.demo.enums.GenreEnum).values()}"
+												th:value="${p.positionName}" th:text="${p.PositionName}">
+											</option>
+									</select></td>
+
+								</tr>
+
+								<tr>
+									<th>Item1</th>
+									<td><input type="text" th:field="*{label1}"></td>
+									<td><input type="text" th:field="*{score1}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item2</th>
+									<td><input type="text" th:field="*{label2}"></td>
+									<td><input type="text" th:field="*{score2}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item3</th>
+									<td><input type="text" th:field="*{label3}"></td>
+									<td><input type="text" th:field="*{score3}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item4</th>
+									<td><input type="text" th:field="*{label4}"></td>
+									<td><input type="text" th:field="*{score4}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item5</th>
+									<td><input type="text" th:field="*{label5}"></td>
+									<td><input type="text" th:field="*{score5}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item6</th>
+									<td><input type="text" th:field="*{label6}"></td>
+									<td><input type="text" th:field="*{score6}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item7</th>
+									<td><input type="text" th:field="*{label7}"></td>
+									<td><input type="text" th:field="*{score7}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item8</th>
+									<td><input type="text" th:field="*{label8}"></td>
+									<td><input type="text" th:field="*{score8}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item9</th>
+									<td><input type="text" th:field="*{label9}"></td>
+									<td><input type="text" th:field="*{score9}" class="score"></td>
+								</tr>
+								<tr>
+									<th>Item10</th>
+									<td><input type="text" th:field="*{label10}"></td>
+									<td><input type="text" th:field="*{score10}" class="score"></td>
+								</tr>
+
+								<tr>
+									<th>Comment</th>
+									<td><textarea th:field="*{comment}"></textarea></td>
+								</tr>
+
+								<tr>
+									<th>ImagePhoto</th>
+									<td><input type="file" name="uploadFile"></td>
+								</tr>
+
+								<tr>
+									<th>TeamColor</th>
+									<td><input type="color" id="colorBox2" name="color" th:value="*{color}"></td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div class="btn-wrapper">
+							<button type="submit" class="button">登録！</button>
+							<a th:href="@{/chart}"><button type="button"
+									class="button reset">リセット</button></a>
+						</div>
+					</div>
+
+					<div class="right">
+						<div id="canvas-box">
+							<div class="member">
+								<div class="member-card">
+									<h2 th:text="${form.number}" class="number" id="num2"></h2>
+									<div class="name">
+										<h2 th:text="${form.firstName}" class="first-name"
+											id="name2"></h2>
+										<h2 th:text="${form.lastName}" class="last-name"></h2>
+									</div>
+								</div>
+								<div class="member-image">
+									<img th:src="'data:image/png;base64,' + ${form.imgBase}"
+										alt="商品画像" onerror="this.src='/images/no_image.jpg'">
+									<p th:text="${form.position}"></p>
+								</div>
+								<div class="bottom">
+									<div class="chart">
+										<p>rating</p>
+										<h3 th:text="${avg}"></h3>
+										<canvas id="chart"></canvas>
+									</div>
+									<div class="text">
+										<p class="topix">備考</p>
+										<p th:text="${form.comment}" class="comment"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="download">
+							<button id="download-btn" type="button" class="d-button">Download</button>
+						</div>
+					</div>
+				</div>
+			</main>
+		</form>
+	</div>
+
+
+	<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var ctx = document.getElementById("chart").getContext('2d');
+    var ChartDemo = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: /*[[ ${label} ]]*/,
+            datasets: [
+                {
+                    label: /*[[ ${form.lastName} ]]*/,
+                    backgroundColor : 'rgba(210, 210, 220,0.3)',
+					borderColor : 'rgb(210, 210, 220)',
+					lineTension : 0,
+					fill : true,
+                    data: /*[[ ${score} ]]*/,
+                },
+            ]
+        },
+        options:{
+            scales: {
+                r: {
+                  //グラフの最小値・最大値
+                  min: 0,
+                  max: 100,
+                  stepSize: 10, 
+                
+                  //グリッドライン
+                  grid: {
+                    color: 'rgb(119,101,112)',
+                  },
+                  //アングルライン
+                  angleLines: {
+                    color: 'rgb(119,101,112)',
+                  },
+                  //各項目のラベル
+                  pointLabels: {
+                    color: 'white',
+                  },
+                  ticks: {             // 目盛り
+                    stepSize: 10,        // 目盛の間隔
+                },
+                },
+              },
+            }
+    });
+    /*]]>*/
+    </script>
+	<script src="js/main.js"></script>
+</body>
+</html>
