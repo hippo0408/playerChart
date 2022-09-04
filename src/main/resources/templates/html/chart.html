@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <link th:href="@{/css/chart.css}" rel="stylesheet" type="text/css">
-<link th:href="@{/css/responsive.css}" rel="stylesheet" type="text/css">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js"></script>
 <title>レーダーチャート表示画面</title>
@@ -116,8 +114,7 @@
 
 								<tr>
 									<th>TeamColor</th>
-									<td><input type="color" id="colorBox2" name="color"
-										th:value="*{color}"></td>
+									<td><input type="color" id="colorBox2" name="color" th:value="*{color}"></td>
 								</tr>
 
 							</tbody>
@@ -126,7 +123,6 @@
 							<button type="submit" class="button">登録！</button>
 							<a th:href="@{/chart}"><button type="button"
 									class="button reset">リセット</button></a>
-							<button id="download-btn" type="button" class="d-button">Download</button>
 						</div>
 					</div>
 
@@ -136,7 +132,8 @@
 								<div class="member-card">
 									<h2 th:text="${form.number}" class="number" id="num2"></h2>
 									<div class="name">
-										<h2 th:text="${form.firstName}" class="first-name" id="name2"></h2>
+										<h2 th:text="${form.firstName}" class="first-name"
+											id="name2"></h2>
 										<h2 th:text="${form.lastName}" class="last-name"></h2>
 									</div>
 								</div>
@@ -151,12 +148,15 @@
 										<h3 th:text="${avg}"></h3>
 										<canvas id="chart"></canvas>
 									</div>
-								</div>
-								<div class="text">
-									<p class="topix">備考</p>
-									<p th:text="${form.comment}" class="comment"></p>
+									<div class="text">
+										<p class="topix">備考</p>
+										<p th:text="${form.comment}" class="comment"></p>
+									</div>
 								</div>
 							</div>
+						</div>
+						<div class="download">
+							<button id="download-btn" type="button" class="d-button">Download</button>
 						</div>
 					</div>
 				</div>
