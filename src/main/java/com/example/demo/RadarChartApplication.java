@@ -7,6 +7,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+/**
+ * メインとなるアプリケーションクラス.
+ * 
+ * @version 1.0.0
+ * @author k.ogiwara
+ */
 @SpringBootApplication
 public class RadarChartApplication {
 
@@ -14,6 +20,11 @@ public class RadarChartApplication {
 	@Autowired
 	private MessageSource messageSource;
 
+	/**
+	 * Javaを実行するためのメソッド.
+	 * 
+	 * @param args コマンドライン引数
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(RadarChartApplication.class, args);
 	}
